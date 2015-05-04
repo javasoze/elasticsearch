@@ -87,7 +87,7 @@ public class InternalEngine extends Engine {
     private final IndexWriter indexWriter;
 
     private final SearcherFactory searcherFactory;
-    private final SearcherManager searcherManager;
+    private final IndexSearcherManager searcherManager;
 
     // we use flushNeeded here, since if there are no changes, then the commit won't write
     // will not really happen, and then the commitUserData and the new translog will not be reflected
@@ -114,7 +114,7 @@ public class InternalEngine extends Engine {
         this.versionMap = new LiveVersionMap();
         store.incRef();
         IndexWriter writer = null;
-        SearcherManager manager = null;
+        IndexSearcherManager manager = null;
         boolean success = false;
         try {
             this.onGoingRecoveries = new FlushingRecoveryCounter(this, store, logger);
@@ -193,13 +193,13 @@ public class InternalEngine extends Engine {
         return new Tuple<>(null, nextTranslogId);
     }
 
-    private SearcherManager createSearcherManager() throws EngineException {
+    private IndexSearcherManager createSearcherManager() throws EngineException {
         boolean success = false;
-        SearcherManager searcherManager = null;
+        IndexSearcherManager searcherManager = null;
         try {
             try {
                 final DirectoryReader directoryReader = ElasticsearchDirectoryReader.wrap(DirectoryReader.open(indexWriter, true), shardId);
-                searcherManager = new SearcherManager(directoryReader, searcherFactory);
+                searcherManager = new IndexSearcherManager(directoryReader, searcherFactory);
                 lastCommittedSegmentInfos = store.readLastCommittedSegmentsInfo();
                 success = true;
                 return searcherManager;
@@ -975,7 +975,7 @@ public class InternalEngine extends Engine {
     }
 
     @Override
-    protected SearcherManager getSearcherManager() {
+    protected IndexSearcherManager getSearcherManager() {
         return searcherManager;
     }
 

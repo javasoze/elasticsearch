@@ -20,9 +20,9 @@ package org.elasticsearch.test.engine;
 
 import org.apache.lucene.search.AssertingIndexSearcher;
 import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.SearcherManager;
 import org.elasticsearch.index.engine.EngineConfig;
 import org.elasticsearch.index.engine.EngineException;
+import org.elasticsearch.index.engine.IndexSearcherManager;
 import org.elasticsearch.index.engine.InternalEngine;
 
 import java.io.IOException;
@@ -70,7 +70,7 @@ final class MockInternalEngine extends InternalEngine {
     }
 
     @Override
-    protected Searcher newSearcher(String source, IndexSearcher searcher, SearcherManager manager) throws EngineException {
+    protected Searcher newSearcher(String source, IndexSearcher searcher, IndexSearcherManager manager) throws EngineException {
         final AssertingIndexSearcher assertingIndexSearcher = support().newSearcher(this, source, searcher, manager);
         assertingIndexSearcher.setSimilarity(searcher.getSimilarity());
         // pass the original searcher to the super.newSearcher() method to make sure this is the searcher that will

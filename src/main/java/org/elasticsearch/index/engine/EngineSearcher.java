@@ -25,7 +25,6 @@ import org.apache.lucene.store.AlreadyClosedException;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.ElasticsearchIllegalStateException;
 import org.elasticsearch.common.logging.ESLogger;
-import org.elasticsearch.index.engine.Engine;
 import org.elasticsearch.index.store.Store;
 
 import java.io.IOException;
@@ -35,12 +34,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Searcher for an Engine
  */
 public class EngineSearcher extends Engine.Searcher {
-    private final SearcherManager manager;
+    private final IndexSearcherManager manager;
     private final AtomicBoolean released = new AtomicBoolean(false);
     private final Store store;
     private final ESLogger logger;
 
-    public EngineSearcher(String source, IndexSearcher searcher, SearcherManager manager, Store store, ESLogger logger) {
+    public EngineSearcher(String source, IndexSearcher searcher, IndexSearcherManager manager, Store store, ESLogger logger) {
         super(source, searcher);
         this.manager = manager;
         this.store = store;

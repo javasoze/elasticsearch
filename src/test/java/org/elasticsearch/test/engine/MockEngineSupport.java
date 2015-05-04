@@ -24,7 +24,6 @@ import org.apache.lucene.index.FilterDirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.search.AssertingIndexSearcher;
 import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.SearcherManager;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.common.logging.ESLogger;
 import org.elasticsearch.common.logging.Loggers;
@@ -32,7 +31,7 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.engine.Engine;
 import org.elasticsearch.index.engine.EngineConfig;
 import org.elasticsearch.index.engine.EngineException;
-import org.elasticsearch.index.engine.InternalEngine;
+import org.elasticsearch.index.engine.IndexSearcherManager;
 import org.elasticsearch.test.ElasticsearchIntegrationTest;
 
 import java.io.IOException;
@@ -120,7 +119,7 @@ public final class MockEngineSupport {
         }
     }
 
-    public AssertingIndexSearcher newSearcher(Engine engine, String source, IndexSearcher searcher, SearcherManager manager) throws EngineException {
+    public AssertingIndexSearcher newSearcher(Engine engine, String source, IndexSearcher searcher, IndexSearcherManager manager) throws EngineException {
         IndexReader reader = searcher.getIndexReader();
         IndexReader wrappedReader = reader;
         assert reader != null;
